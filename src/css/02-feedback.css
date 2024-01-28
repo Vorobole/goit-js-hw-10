@@ -1,0 +1,43 @@
+.feedback-form {
+  display: flex;
+  flex-direction: column;
+  max-width: 480px;
+  padding: 12px;
+  background-color: #fff;
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  border-radius: 4px;
+  font-family: Montserrat;
+}
+
+.feedback-form label {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 16px;
+}
+
+.feedback-form button {
+  width: 95px;
+  padding: 8px 12px;
+  cursor: pointer;
+
+  border-radius: 8px;
+  border: none;
+  background: #4e75ff;
+  color: #fff;
+  font-family: Montserrat;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 1.5;
+  letter-spacing: 0.64px;
+}
+
+input,
+textarea {
+  padding: 8px;
+  font: inherit;
+}
+
+textarea {
+  resize: none;
+}
