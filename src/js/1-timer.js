@@ -1,7 +1,7 @@
-// Описаний в документації
 import flatpickr from 'flatpickr';
-// Додатковий імпорт стилів
 import 'flatpickr/dist/flatpickr.min.css';
+import iziToast from 'izitoast';
+import 'izitoast/dist/css/iziToast.min.css';
 
 const input = document.querySelector('input[type="text"]');
 const startBtn = document.querySelector('[data-start]');
@@ -17,22 +17,26 @@ const options = {
   minuteIncrement: 1,
   onClose(selectedDates) {
     userDate = selectedDates[0].getTime();
-    checkedCorrectDate(userDate);
+    checkCorrectDate(userDate);
   },
 };
 
 startBtn.addEventListener('click', onClick);
 
 startBtn.setAttribute('disabled', true);
-let userDate = 0;
+let userDate = null;
 
 flatpickr(input, options);
 
-function checkedCorrectDate(date) {
+function checkCorrectDate(date) {
   const targetTime = deadlineTime(date);
 
   if (targetTime <= 0) {
-    return Notiflix.Notify.failure('Please choose a date in the future');
+    iziToast.error({
+      title: 'Error',
+      message: 'Please choose a date in the future',
+    });
+    return;
   }
 
   startBtn.removeAttribute('disabled');
@@ -48,29 +52,29 @@ function addLeadingZero(value) {
   return value.toString().padStart(2, '0');
 }
 
+function convertMs(ms) {
+  const second = 1000;
+  const minute = second * 60;
+  const hour = minute * 60;
+  const day = hour * 24;
+
+  const days = Math.floor(ms / day);
+  const hours = Math.floor((ms % day) / hour);
+  const minutes = Math.floor(((ms % day) % hour) / minute);
+  const seconds = Math.floor((((ms % day) % hour) % minute) / second);
+
+  timerDays.textContent = addLeadingZero(days);
+  timerHours.textContent = addLeadingZero(hours);
+  timerMinutes.textContent = addLeadingZero(minutes);
+  timerSeconds.textContent = addLeadingZero(seconds);
+}
+
 function onClick() {
   const intervalTimer = setInterval(() => {
     let timeLeft = deadlineTime(userDate);
 
     if (timeLeft <= 1000) {
       clearInterval(intervalTimer);
-    }
-
-    function convertMs(ms) {
-      const second = 1000;
-      const minute = second * 60;
-      const hour = minute * 60;
-      const day = hour * 24;
-
-      const days = Math.floor(ms / day);
-      const hours = Math.floor((ms % day) / hour);
-      const minutes = Math.floor(((ms % day) % hour) / minute);
-      const seconds = Math.floor((((ms % day) % hour) % minute) / second);
-
-      timerDays.textContent = addLeadingZero(days);
-      timerHours.textContent = addLeadingZero(hours);
-      timerMinutes.textContent = addLeadingZero(minutes);
-      timerSeconds.textContent = addLeadingZero(seconds);
     }
 
     convertMs(timeLeft);

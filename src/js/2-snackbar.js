@@ -15,17 +15,14 @@ function createPromise(delay, state) {
   });
 }
 
+document.querySelector('.form').addEventListener('submit', function (event) {
+  event.preventDefault();
 
-document
-  .getElementById('promiseForm')
-  .addEventListener('submit', function (event) {
-    event.preventDefault();
+  const delay = parseInt(this.elements.delay.value, 10);
+  const state = document.querySelector('input[name="state"]:checked');
 
-
-    const delay = parseInt(this.elements.delay.value, 10);
-    const state = this.elements.state.value;
-
-    createPromise(delay, state)
+  if (state) {
+    createPromise(delay, state.value)
       .then(result => {
         iziToast.success({
           title: 'Success',
@@ -37,5 +34,14 @@ document
           title: 'Error',
           message: `❌ Rejected promise in ${result}ms`,
         });
+      })
+      .finally(() => {
+        this.reset();
       });
-  });
+  } else {
+    iziToast.error({
+      title: 'Error',
+      message: 'Please select a state (fulfilled/rejected)',
+    });
+  }
+});
