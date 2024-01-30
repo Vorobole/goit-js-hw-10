@@ -21,6 +21,8 @@ document.querySelector('.form').addEventListener('submit', function (event) {
   const delay = parseInt(this.elements.delay.value, 10);
   const state = document.querySelector('input[name="state"]:checked');
 
+  this.reset();
+
   if (state) {
     createPromise(delay, state.value)
       .then(result => {
@@ -34,9 +36,6 @@ document.querySelector('.form').addEventListener('submit', function (event) {
           title: 'Error',
           message: `❌ Rejected promise in ${result}ms`,
         });
-      })
-      .finally(() => {
-        this.reset();
       });
   } else {
     iziToast.error({

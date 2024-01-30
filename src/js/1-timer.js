@@ -40,6 +40,7 @@ function checkCorrectDate(date) {
   }
 
   startBtn.removeAttribute('disabled');
+  input.setAttribute('disabled', true); // Деактивація поля вводу
 }
 
 function deadlineTime(date) {
@@ -70,13 +71,20 @@ function convertMs(ms) {
 }
 
 function onClick() {
+  startBtn.setAttribute('disabled', true);
   const intervalTimer = setInterval(() => {
     let timeLeft = deadlineTime(userDate);
 
     if (timeLeft <= 1000) {
       clearInterval(intervalTimer);
+      enableInputs();
     }
 
     convertMs(timeLeft);
   }, 1000);
+}
+
+function enableInputs() {
+  startBtn.removeAttribute('disabled');
+  input.removeAttribute('disabled');
 }
